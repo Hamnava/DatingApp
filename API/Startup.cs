@@ -1,3 +1,5 @@
+using Business.Repository;
+using Business.Repository.Interface;
 using Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +36,9 @@ namespace API
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DatingAppConnection"));
             });
+
+            // add services scopes
+            services.AddScoped<UserInterface, UserRepositoryService>();
 
 
             services.AddControllers();
