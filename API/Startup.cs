@@ -40,6 +40,7 @@ namespace API
             // add services scopes
             services.AddScoped<UserInterface, UserRepositoryService>();
 
+            services.AddCors();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -61,7 +62,7 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors(policy => policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost:4200"));
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
