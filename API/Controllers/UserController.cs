@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+  
+    public class UserController : BaseAPIController
     {
         private readonly UserInterface _context;
         public UserController(UserInterface context)
