@@ -1,5 +1,6 @@
 ﻿using Business.Repository.Interface;
 using Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -18,6 +19,7 @@ namespace API.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable> UserList()
         {
             return await _context.GetUsers();
@@ -25,6 +27,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<ApplicationUser> GetUser(int id)
         {
             return await _context.GetUserById(id);
