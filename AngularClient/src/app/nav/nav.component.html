@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container">
+  <a class="navbar-brand" href="#">Meeting App</a>
+
+    <ul class="navbar-nav mr-auto" *ngIf="loggedIn">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Matches</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Lists</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Messages</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" (click)="logout()">LogOut</a>
+      </li>
+    </ul>
+
+    <div *ngIf="loggedIn" class="btn-group" dropdown>
+      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+              aria-controls="dropdown-basic">
+        Button dropdown <span class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-basic">
+        <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
+        </li>
+      </ul>
+    </div>
+     <!-- <div class="dropdown" *ngIf="loggedIn" dropdown>
+         <a href="" class="dropdown-toggle text-light" dropdownToggle  >Welcome User</a>
+         <div class="dropdown-menu" *dropdownMenu>
+           <a href="" class="dropdown-item">Edit Profile</a>
+           <div class="dropdown-devider"></div>
+           <a href="" class="dropdown-item" (click)="logout()">LogOut</a>
+         </div>
+     </div> -->
+
+    <form *ngIf="!loggedIn" #LoginForm="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()">
+      <input
+      name="username"
+       [(ngModel)]="model.username"
+       class="form-control mr-sm-2"
+       type="text" p
+       laceholder="Username">
+
+      <input
+       name="password"
+       [(ngModel)]="model.password"
+       class="form-control mr-sm-2"
+       type="password"
+        placeholder="Password">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+    </form>
+  </div>
+</nav>
