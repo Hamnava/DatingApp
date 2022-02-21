@@ -2,7 +2,7 @@
   <div class="container">
   <a class="navbar-brand" href="#">Meeting App</a>
 
-    <ul class="navbar-nav mr-auto" *ngIf="loggedIn">
+    <ul class="navbar-nav mr-auto" *ngIf="accountService.currentUser$ | async">
       <li class="nav-item active">
         <a class="nav-link" href="#">Matches</a>
       </li>
@@ -12,36 +12,20 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Messages</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="" (click)="logout()">LogOut</a>
-      </li>
+     
     </ul>
 
-    <div *ngIf="loggedIn" class="btn-group" dropdown>
-      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
-              aria-controls="dropdown-basic">
-        Button dropdown <span class="caret"></span>
-      </button>
-      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-          role="menu" aria-labelledby="button-basic">
-        <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
-        <li class="divider dropdown-divider"></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
-        </li>
-      </ul>
-    </div>
-     <!-- <div class="dropdown" *ngIf="loggedIn" dropdown>
-         <a href="" class="dropdown-toggle text-light" dropdownToggle  >Welcome User</a>
-         <div class="dropdown-menu" *dropdownMenu>
-           <a href="" class="dropdown-item">Edit Profile</a>
-           <div class="dropdown-devider"></div>
-           <a href="" class="dropdown-item" (click)="logout()">LogOut</a>
-         </div>
-     </div> -->
 
-    <form *ngIf="!loggedIn" #LoginForm="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()">
+     <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
+         <a class="dropdown-toggle text-light" dropdownToggle  >Welcome User</a>
+         <div class="dropdown-menu mt-3" *dropdownMenu>
+           <a  class="dropdown-item">Edit Profile</a>
+           <div class="dropdown-divider"></div>
+           <a  class="dropdown-item" (click)="logout()">LogOut</a>
+         </div>
+     </div>
+
+    <form *ngIf="(accountService.currentUser$ | async)=== null" #LoginForm="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()">
       <input
       name="username"
        [(ngModel)]="model.username"
