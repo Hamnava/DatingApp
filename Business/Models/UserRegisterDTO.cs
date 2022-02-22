@@ -13,6 +13,7 @@ namespace Business.Models
         public string Username { get; set; }
 
         [Required(ErrorMessage ="Password field should not be empty")]
+        [StringLength(8, MinimumLength = 4)]
         public string Password { get; set; }
     }
 }
