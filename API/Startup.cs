@@ -1,4 +1,5 @@
 using API.Extentions;
+using Business.Middleware;
 using Business.Repository;
 using Business.Repository.Interface;
 using Data.Context;
@@ -60,9 +61,9 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ExciptionMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
