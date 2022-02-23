@@ -1,4 +1,5 @@
-﻿using Data.Entities;
+﻿using Business.Models;
+using Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,14 @@ namespace Business.Repository.Interface
 {
     public interface UserInterface
     {
-        Task<ApplicationUser> GetUserById(int id);
-        Task<IEnumerable<ApplicationUser>> GetUsers();
+        Task<ApplicationUser> GetUserByIdAsync(int id);
+        Task<IEnumerable<ApplicationUser>> GetUsersAsync();
+        void UpdateUser(ApplicationUser user);
+        Task<ApplicationUser> GetUserByUsernameAsync(string username);
+        Task<bool> SaveAllAsync();
+
+        // imroved method
+        Task<IEnumerable<MemberDTO>> GetMembersAsync();
+        Task<MemberDTO> GetMemberByUsernameAsync(string username);
     }
 }
