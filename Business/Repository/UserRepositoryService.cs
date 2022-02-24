@@ -49,9 +49,9 @@ namespace Business.Repository
             return await _context.Users.Include(x=> x.Photos).ToListAsync();
         }
 
-        public Task<bool> SaveAllAsync()
+        public async Task<bool> SaveAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void UpdateUser(ApplicationUser user)
