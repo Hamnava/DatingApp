@@ -5,6 +5,7 @@ using Business.PublicClasses;
 using Business.Repository.Interface;
 using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -21,11 +22,13 @@ namespace API.Controllers
         private readonly UserInterface _context;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
+       
         public UserController(UserInterface context, IMapper mapper, IPhotoService photoService)
         {
             _context = context;
             _mapper = mapper;
             _photoService = photoService;
+         
         }
 
 
@@ -119,6 +122,24 @@ namespace API.Controllers
             if (await _context.SaveAllAsync()) return NoContent();
 
             return BadRequest("Faild to update the main photo");
+        }
+
+        [HttpDelete("delete-photo/{photoId}")]
+        public async Task<ActionResult> DeletePhoto(int photoId)
+        {
+            var user = await _context.GetUserByUsernameAsync(User.GetUsername());
+            var photo = user.Photos.FirstOrDefault(x=> x.Id == photoId);
+            if (photo == null) return NotFound();
+
+            if (photo.IsMain) return BadRequest("The main photo can not be deleted!");
+            var deletUrl = photo.Url.Replace("https://localhost:44372/images/", "");
+            var result = PhotoUpload.DeleteImg(deletUrl);
+
+            user.Photos.Remove(photo);
+
+            if (await _context.SaveAllAsync()) return Ok();
+
+            return BadRequest("Faild delete photo!");
         }
     }
 }

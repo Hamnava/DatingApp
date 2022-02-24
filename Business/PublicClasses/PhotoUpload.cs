@@ -31,7 +31,7 @@ namespace Business.PublicClasses
 
         }
 
-        public static bool DeleteImg(string path, string imgname)
+        public static bool DeleteImg(string imgname)
         {
             try
             {
