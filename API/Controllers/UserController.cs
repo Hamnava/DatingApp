@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using API.Extentions;
+using AutoMapper;
 using Business.Models;
 using Business.Repository.Interface;
 using Data.Entities;
@@ -17,10 +18,12 @@ namespace API.Controllers
     {
         private readonly UserInterface _context;
         private readonly IMapper _mapper;
-        public UserController(UserInterface context, IMapper mapper)
+        private readonly IPhotoService _photoService;
+        public UserController(UserInterface context, IMapper mapper, IPhotoService photoService)
         {
             _context = context;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
 
@@ -33,7 +36,7 @@ namespace API.Controllers
         }
 
         
-        [HttpGet("{username}")]
+        [HttpGet("{username}" , Name ="GetUser")]
         public async Task<ActionResult<MemberDTO>> GetUserByUsername(string username)
         {
             return await _context.GetMemberByUsernameAsync(username);
@@ -43,16 +46,42 @@ namespace API.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateMember(UpdateMemberDto memberDto)
         {
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _context.GetUserByUsernameAsync(username);
+           
+            var user = await _context.GetUserByUsernameAsync(User.GetUsername());
             _mapper.Map(memberDto, user);
 
              _context.UpdateUser(user);
-             //await _context.SaveAllAsync();
 
             if (await _context.SaveAllAsync()) return NoContent();
 
             return BadRequest("Faild to Update user!");
+        }
+
+        [HttpPost("add-photo")]
+        public async Task<ActionResult<PhotoDTO>> AddPhoto(IFormFile file)
+        {
+            var user = await _context.GetUserByUsernameAsync(User.GetUsername());
+            var result = await _photoService.AddPhotoAsync(file);
+
+            if (result.Error != null) return BadRequest(result.Error.Message);
+
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+            if (user.Photos.Count  == 0)
+            {
+                photo.IsMain = true;
+            };
+
+            user.Photos.Add(photo);
+            if (await _context.SaveAllAsync()) 
+            {
+                return CreatedAtRoute("GetUser", new { username = user.UserName }, _mapper.Map<PhotoDTO>(photo));
+            }
+
+            return BadRequest("Problem during adding photo");
         }
     }
 }
