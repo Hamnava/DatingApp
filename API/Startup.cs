@@ -1,6 +1,7 @@
 using API.Extentions;
 using API.Helpers;
 using API.Middleware;
+using Business.PublicClasses;
 using Business.Repository;
 using Business.Repository.Interface;
 using Data.Context;
@@ -37,9 +38,11 @@ namespace API
             // add services scopes
             services.AddScoped<UserInterface, UserRepositoryService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPhotoService, PhotoService>();
 
-            // auto Mapper
+            // auto Mapper and Cloudinary configeration
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
 
             // for jwt Bearer token
             services.AddIdentityServices(Configuration);
@@ -65,7 +68,7 @@ namespace API
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCors(policy => policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost:4200"));
            

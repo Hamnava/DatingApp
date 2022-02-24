@@ -4,6 +4,7 @@ using Data.Context;
 using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u=> u.UserName == loginDTO.Username);
+            var user = await _context.Users.Include(x=> x.Photos).SingleOrDefaultAsync(u=> u.UserName == loginDTO.Username);
             if (user == null) return Unauthorized("Invalid Username!");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -62,7 +63,8 @@ namespace API.Controllers
             return new UserDTO
             {
                 Username = loginDTO.Username,
-                Token = _tokenService.GetToken(user)
+                Token = _tokenService.GetToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
         }
 
