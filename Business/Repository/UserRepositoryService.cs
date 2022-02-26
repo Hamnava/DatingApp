@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Business.Models;
+using Business.PublicClasses;
 using Business.Repository.Interface;
 using Data.Context;
 using Data.Entities;
@@ -29,9 +30,11 @@ namespace Business.Repository
                 .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<MemberDTO>> GetMembersAsync()
+        public async Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams)
         {
-            return await _context.Users.ProjectTo<MemberDTO>(_mapper.ConfigurationProvider).ToListAsync();
+            var query = _context.Users.ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
+                .AsNoTracking();
+            return await PagedList<MemberDTO>.CreateAsync(query, userParams.PageNumber, userParams.pageSize);
         }
 
         public async Task<ApplicationUser> GetUserByIdAsync(int id)
