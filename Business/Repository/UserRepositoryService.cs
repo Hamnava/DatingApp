@@ -34,7 +34,8 @@ namespace Business.Repository
         {
             var query = _context.Users.ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
                 .AsNoTracking();
-            return await PagedList<MemberDTO>.CreateAsync(query, userParams.PageNumber, userParams.pageSize);
+            return await PagedList<MemberDTO>.CreateAsync(query, userParams.PageNumber,
+                                                           userParams.pageSize);
         }
 
         public async Task<ApplicationUser> GetUserByIdAsync(int id)
