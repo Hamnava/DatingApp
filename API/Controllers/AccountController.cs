@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Models;
+using Business.PublicClasses;
 using Business.Repository.Interface;
 using Data.Context;
 using Data.Entities;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     public class AccountController : BaseAPIController
     {
         private readonly ApplicationContext _context;
