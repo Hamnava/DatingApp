@@ -40,6 +40,7 @@ namespace API
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IlikesRepository, LikeRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<LogUserActivity>();
 
             // auto Mapper and Cloudinary configeration
