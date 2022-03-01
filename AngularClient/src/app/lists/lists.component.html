@@ -1,5 +1,5 @@
 <div class="text-center mt-4">
-  <h3> {{predicate === 'liked'? 'Members I liked': 'Member who liked me!'}} </h3>
+  <h3> {{predicate === 'liked'? 'Members I liked': 'Members who liked me!'}} </h3>
 </div>
 
 <div class="container mt-4">
@@ -8,11 +8,11 @@
     <div class="btn-group" name="predicate">
       <button class="btn btn-primary" btnRadio="liked"
          [(ngModel)]="predicate" (click)="loadLikes()">
-          Member I like
+          Members I like
       </button>
       <button class="btn btn-primary" btnRadio="likedBy"
        [(ngModel)]="predicate" (click)="loadLikes()">
-        Member who like me
+        Members who like me
     </button>
   </div>
    </div>
@@ -24,4 +24,20 @@
        </div>
     </div>
   </div>
+</div>
+
+
+<div class="d-flex justify-content-center" *ngIf="pagination">
+  <pagination
+        [boundaryLinks]="true"
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;"
+        nextText="&rsaquo;"
+        firstText="&laquo;"
+        lastText="&raquo;">
+
+  </pagination>
 </div>

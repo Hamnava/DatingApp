@@ -1,4 +1,5 @@
 ﻿using Business.Models;
+using Business.PublicClasses;
 using Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,6 @@ namespace Business.Repository.Interface
     {
         Task<UserLike> GetUserLike(int sourceUserId, int likedUserId);
         Task<ApplicationUser> GetUserWithLikes(int userId);
-        Task<IEnumerable<LikeDTO>> GetUserLikes(string predicate, int userId);
+        Task<PagedList<LikeDTO>> GetUserLikes(LikesParams likesParams);
     }
 }
