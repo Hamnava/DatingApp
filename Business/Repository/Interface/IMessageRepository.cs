@@ -15,8 +15,8 @@ namespace Business.Repository.Interface
         void DeleteMessage(Message message);
 
         Task<Message> GetMessageById(int id);
-        Task<PagedList<MessageDto>> GetMessageForUser();
-        Task<IEnumerable<MessageDto>> GetMessageThread(int currentUserId, int recipeintId);
+        Task<PagedList<MessageDto>> GetMessageForUser(MessageParams messageParams);
+        Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipeintUsername);
         Task<bool> SaveAllAsync();
     }
 }
