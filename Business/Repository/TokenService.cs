@@ -1,5 +1,6 @@
 ﻿using Business.Repository.Interface;
 using Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -15,17 +16,23 @@ namespace Business.Repository
     public class TokenService : ITokenService
     {
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration config)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public TokenService(IConfiguration config, UserManager<ApplicationUser> userManager)
         {
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            _userManager = userManager;
         }
-        public string GetToken(ApplicationUser user)
+        public async Task<string> GetToken(ApplicationUser user)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId , user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName , user.UserName),
             };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(roles.Select(role=> new Claim(ClaimTypes.Role, role)));
+
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor

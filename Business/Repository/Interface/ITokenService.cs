@@ -9,6 +9,6 @@ namespace Business.Repository.Interface
 {
     public interface ITokenService
     {
-        string GetToken(ApplicationUser user);
+        Task<string> GetToken(ApplicationUser user);
     }
 }
