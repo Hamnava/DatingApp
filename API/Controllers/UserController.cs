@@ -31,7 +31,7 @@ namespace API.Controllers
          
         }
 
-        [Authorize(Roles = "Admin")]
+       
         [HttpGet]
         public async Task<ActionResult<PagedList<MemberDTO>>> GetUsers([FromQuery]UserParams userParams)
         {
@@ -49,7 +49,7 @@ namespace API.Controllers
 
         }
 
-        [Authorize(Roles ="Moderator")]
+       
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDTO>> GetUserByUsername(string username)
         {
