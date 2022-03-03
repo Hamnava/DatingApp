@@ -37,6 +37,7 @@ namespace API
             });
 
             // add services scopes
+            services.AddSingleton<PresenceTracker>();
             services.AddScoped<UserInterface, UserRepositoryService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPhotoService, PhotoService>();

@@ -6,6 +6,7 @@ import { Member } from 'src/app/_models/member';
 import { Messages } from 'src/app/_models/message';
 import { MembersService } from 'src/app/_services/members.service';
 import { MessageService } from 'src/app/_services/message.service';
+import { PresenceService } from 'src/app/_services/presence.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -20,7 +21,7 @@ export class MemberDetailComponent implements OnInit {
   activeTab: TabDirective;
   messages : Messages[] = [];
 
-  constructor(private memberService: MembersService,
+  constructor(public presence: PresenceService,
      private route: ActivatedRoute,private messageService: MessageService ) { }
 
   ngOnInit(): void {
@@ -58,7 +59,7 @@ export class MemberDetailComponent implements OnInit {
     return imageUrls;
   }
 
- 
+
 
   loadMessages(){
     this.messageService.getMessageThread(this.member.userName).subscribe(message=> {
