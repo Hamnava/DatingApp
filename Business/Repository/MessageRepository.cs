@@ -23,6 +23,9 @@ namespace Business.Repository
             _context = context;
             _mapper = mapper;
         }
+
+       
+
         public void AddMessage(Message message)
         {
             _context.Messages.Add(message);
@@ -32,6 +35,8 @@ namespace Business.Repository
         {
             _context.Messages.Remove(message);
         }
+
+       
 
         public async Task<Message> GetMessageById(int id)
         {
@@ -58,6 +63,8 @@ namespace Business.Repository
             return await PagedList<MessageDto>.CreateAsync(messages,
                   messageParams.PageNumber, messageParams.pageSize);
         }
+
+       
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipeintUsername)
         {
@@ -89,5 +96,29 @@ namespace Business.Repository
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+        #region SignalR ConnectionGroup
+
+        
+        public async Task<Connection> GetConnectionAsync(string connectionId)
+        {
+            return await _context.Connections.FindAsync(connectionId);
+        }
+        public void AddGroup(Group group)
+        {
+            _context.Groups.Add(group);
+        }
+        public void RemoveConnection(Connection connection)
+        {
+            _context.Connections.Remove(connection);
+        }
+        public async Task<Group> GetMessageGroup(string groupName)
+        {
+           return await _context.Groups.Include(x=> x.Connections)
+                .FirstOrDefaultAsync(x=> x.Name == groupName);    
+        }
+
+        #endregion
+
     }
 }
