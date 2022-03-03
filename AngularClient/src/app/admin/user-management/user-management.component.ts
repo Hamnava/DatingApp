@@ -25,12 +25,7 @@ export class UserManagementComponent implements OnInit {
     })
   }
 
-
-  openModalWithComponent() {
-
-  }
-
-  openRoleModal(user: User){
+  openRolesModal(user: User){
     const config = {
        class: 'modal-dialog-centered',
        initialState: {
@@ -62,7 +57,7 @@ export class UserManagementComponent implements OnInit {
       availableRoles.forEach(role=> {
         let isMatch = false;
         for(const userRole of userRoles){
-          if(user.role === userRole){
+          if(role.name === userRole){
             isMatch = true;
             role.checked = true;
             roles.push(role);
