@@ -30,6 +30,9 @@ import { DateInputComponent } from './_forms/date-input/date-input.component';
 import { MemberMessagesComponent } from './member/member-messages/member-messages.component';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { HasRoleDirective } from './_directive/has-role.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { RolesModalsComponent } from './modals/roles-modals/roles-modals.component';
 
 
 
@@ -54,7 +57,10 @@ import { HasRoleDirective } from './_directive/has-role.directive';
     DateInputComponent,
     MemberMessagesComponent,
     AdminPanelComponent,
-    HasRoleDirective
+    HasRoleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    RolesModalsComponent
   ],
   imports: [
     BrowserModule,
