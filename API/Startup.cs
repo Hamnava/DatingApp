@@ -1,6 +1,7 @@
 using API.Extentions;
 using API.Helpers;
 using API.Middleware;
+using API.SignalR;
 using Business.PublicClasses;
 using Business.Repository;
 using Business.Repository.Interface;
@@ -36,9 +37,13 @@ namespace API
             });
 
             // add services scopes
+            services.AddSingleton<PresenceTracker>();
             services.AddScoped<UserInterface, UserRepositoryService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<IlikesRepository, LikeRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<LogUserActivity>();
 
             // auto Mapper and Cloudinary configeration
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
@@ -46,6 +51,9 @@ namespace API
 
             // for jwt Bearer token
             services.AddIdentityServices(Configuration);
+
+            // for SignalR hub
+            services.AddSignalR();
 
             services.AddCors();
 
@@ -70,7 +78,10 @@ namespace API
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors(policy => policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost:4200"));
+            app.UseCors(policy => policy.AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .WithOrigins("https://localhost:4200"));
            
             app.UseAuthentication();
             app.UseAuthorization();
@@ -78,6 +89,8 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
+                endpoints.MapHub<MessageHub>("hubs/message");
             });
         }
     }

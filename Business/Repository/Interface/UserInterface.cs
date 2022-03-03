@@ -1,4 +1,5 @@
 ﻿using Business.Models;
+using Business.PublicClasses;
 using Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Business.Repository.Interface
         Task<bool> SaveAllAsync();
 
         // imroved method
-        Task<IEnumerable<MemberDTO>> GetMembersAsync();
+        Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams);
         Task<MemberDTO> GetMemberByUsernameAsync(string username);
     }
 }

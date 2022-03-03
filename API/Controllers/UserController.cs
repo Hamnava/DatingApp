@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Authorize]
+    
     public class UserController : BaseAPIController
     {
         private readonly UserInterface _context;
@@ -31,16 +31,25 @@ namespace API.Controllers
          
         }
 
-
+       
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDTO>>> UserList()
+        public async Task<ActionResult<PagedList<MemberDTO>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await _context.GetMembersAsync();
+            var user = await _context.GetMemberByUsernameAsync(User.GetUsername());
+            userParams.CurrentUsername = user.UserName;
+
+            if (string.IsNullOrEmpty(userParams.Gender))
+            {
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+            }
+            var users = await _context.GetMembersAsync(userParams);
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, 
+                                         users.TotalCount, users.TotalPages);
             return Ok(users);
 
         }
 
-
+       
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDTO>> GetUserByUsername(string username)
         {

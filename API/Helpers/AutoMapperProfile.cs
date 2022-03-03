@@ -16,6 +16,14 @@ namespace API.Helpers
 
             CreateMap<Photo, PhotoDTO>().ReverseMap();
             CreateMap<UpdateMemberDto, ApplicationUser>();
+            CreateMap<UserRegisterDTO, ApplicationUser>();
+
+            CreateMap<Message, MessageDto>()
+                .ForMember(dest=> dest.SenderPhotoUrl,opt=> 
+                opt.MapFrom(src=> src.Sender.Photos.FirstOrDefault(x=> x.IsMain).Url))
+
+                .ForMember(dest=> dest.RecipeintPhotoUrl, opt => 
+                opt.MapFrom(src=> src.Recipeint.Photos.FirstOrDefault(x=> x.IsMain).Url));
         }
     }
 }
