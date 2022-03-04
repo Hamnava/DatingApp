@@ -16,3 +16,8 @@
   padding-bottom: 10px;
   border-bottom: 1px dotted #ccc;
 }
+
+.card-body{
+  height: 400px;
+  overflow: auto;
+}

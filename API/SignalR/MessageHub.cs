@@ -69,10 +69,10 @@ namespace API.SignalR
             var groupName = GetGroupName(sender.UserName, recipeint.UserName);
             var group = await _messageRepository.GetMessageGroup(groupName);
 
-            if(group.Connections.Any(x=> x.Username == recipeint.UserName))
-            {
-                message.DateRead = DateTime.UtcNow;
-            }
+            //if(group.Connections.Any(x=> x.Username == recipeint.UserName))
+            //{
+            //    message.DateRead = DateTime.UtcNow;
+            //}
 
 
             _messageRepository.AddMessage(message);
