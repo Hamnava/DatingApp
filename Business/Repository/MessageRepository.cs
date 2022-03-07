@@ -84,7 +84,7 @@ namespace Business.Repository
             {
                 foreach (var message in UnreadMessage)
                 {
-                    message.DateRead = DateTime.Now;
+                    message.DateRead = DateTime.UtcNow;
                 }
                 await _context.SaveChangesAsync();
             }
