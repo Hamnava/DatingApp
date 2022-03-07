@@ -121,6 +121,14 @@ namespace Business.Repository
                 .FirstOrDefaultAsync(x=> x.Name == groupName);    
         }
 
+        public async Task<Group> GetGroupForConnection(string connectionId)
+        {
+            return await _context.Groups
+                .Include(x => x.Connections)
+                .Where(c => c.Connections.Any(x => x.ConnectionId == connectionId))
+                .FirstOrDefaultAsync();
+        }
+
         #endregion
 
     }

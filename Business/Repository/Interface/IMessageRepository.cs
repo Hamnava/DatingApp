@@ -12,7 +12,7 @@ namespace Business.Repository.Interface
     public interface IMessageRepository
     {
         #region SigalR Connection
-
+        Task<Group> GetGroupForConnection(string connectionId);
         void AddGroup(Group group);
         void RemoveConnection(Connection connection);
         Task<Connection> GetConnectionAsync(string connectionId);
