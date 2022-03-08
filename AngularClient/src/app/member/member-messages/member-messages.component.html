@@ -5,8 +5,11 @@
          <h4>No messages yet... say hi by using the message box below</h4>
     </div>
 
-    <ul *ngIf="(messageService.messageThread$ | async)?.length > 0" class="chat">
-      <li *ngFor="let message of (messageService.messageThread$ | async)">
+    <ul  #scrollMe
+      style="overflow: scroll; height: 450px;"
+      [scrollTop]="scrollMe.scrollHeight"
+      *ngIf="(messageService.messageThread$ | async)?.length > 0" class="chat">
+       <li *ngFor="let message of (messageService.messageThread$ | async)">
         <div>
             <span class="chat-img float-right">
               <img class="rounded-circle" src="{{message.senderPhotoUrl || './assets/user.png'}}"
